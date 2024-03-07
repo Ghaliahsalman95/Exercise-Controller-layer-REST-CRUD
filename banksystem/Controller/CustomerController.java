@@ -30,34 +30,42 @@ public class CustomerController {
     //-----------------------Update customers
     @PutMapping("/updateCustomer/{index}")
     public ApiRespone updateCustomer(@PathVariable int index, @RequestBody Customer customer) {
-        customers.set(index, customer);
-        return new ApiRespone("Updated Successfully 200");
+        if (index < customers.size()) {
+            customers.set(index, customer);
+            return new ApiRespone("Updated Successfully 200");
+        } else return new ApiRespone("Index not Valid ");
     }
 
     //-----------------Delete customers
     @DeleteMapping("deleteCutomer/{index}")
     public ApiRespone deleteCustomer(@PathVariable int index) {
-        customers.remove(index);
-        return new ApiRespone("Deleted Successfully 200");
+        if (index < customers.size()) {
+            customers.remove(index);
+            return new ApiRespone("Deleted Successfully 200");
+        } else return new ApiRespone("Index not Valid ");
     }
 
     //-------------------Deposit money to customer
     @PutMapping("/deposit/{index}/{amount}")
     public ApiRespone deposit(@PathVariable int index, @PathVariable double amount) {
-
-        customers.get(index).setBalance(customers.get(index).getBalance() + amount);
-        return new ApiRespone("Deposited Successfully 200");
+        if (index < customers.size()) {
+            customers.get(index).setBalance(customers.get(index).getBalance() + amount);
+            return new ApiRespone("Deposited Successfully 200");
+        } else return new ApiRespone("Index not Valid ");
 
     }
 
     //-----------------Withdraw money from customers
     @PutMapping("/withdraw/{index}/{amount}")
     public ApiRespone withdraw(@PathVariable int index, @PathVariable double amount) {
-        if (customers.get(index).getBalance() >= amount) {
-            customers.get(index).setBalance(customers.get(index).getBalance() - amount);
-            return new ApiRespone("Withdraw Successfully 200");
-        } else {
-            return new ApiRespone("The Balance not enough");
-        }
+        if (index < customers.size()) {
+            if (customers.get(index).getBalance() >= amount) {
+                customers.get(index).setBalance(customers.get(index).getBalance() - amount);
+                return new ApiRespone("Withdraw Successfully 200");
+            } else {
+                return new ApiRespone("The Balance not enough");
+            }
+        } else return new ApiRespone("Index not Valid ");
+
     }
 }
