@@ -28,10 +28,10 @@ public class TaskController {
     //---------------------Update a task
     @PutMapping("/update/{index}")
     public ApiResponse updateTask(@PathVariable int index, @RequestBody Task task) {
-      if (index>tasks.size()){
-        tasks.set(index, task);
-        return new ApiResponse("Updated Successful");}
-      else return new ApiResponse("Index not Valid ");
+        if (index > tasks.size()) {
+            tasks.set(index, task);
+            return new ApiResponse("Updated Successful");
+        } else return new ApiResponse("Index not Valid ");
 
     }
 
@@ -50,8 +50,9 @@ public class TaskController {
     public ApiResponse changeStatus(@PathVariable int index) {
         if (index < tasks.size()) {
             if (tasks.get(index).getStatus().equalsIgnoreCase("Done")) {
-                tasks.get(index).setStatus("Not Done");
-                return new ApiResponse("Changed successfully");
+                //  tasks.get(index).setStatus("Not Done");
+                //  make this line comment to change this endpoint to change task JUST DONE
+                return new ApiResponse("It is Already DONE");
             } else {
                 tasks.get(index).setStatus("Done");
                 return new ApiResponse("Changed successfully");
