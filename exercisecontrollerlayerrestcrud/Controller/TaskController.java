@@ -11,9 +11,10 @@ import java.util.ArrayList;
 public class TaskController {
 
     ArrayList<Task> tasks = new ArrayList<Task>();
+
     //------------------Create a new taks (title , description , status)
     @PostMapping("/addTask")
-    public ApiResponse addTask(@RequestBody Task task){
+    public ApiResponse addTask(@RequestBody Task task) {
         tasks.add(task);
         return new ApiResponse("Added Successful");
     }
@@ -27,27 +28,38 @@ public class TaskController {
     //---------------------Update a task
     @PutMapping("/update/{index}")
     public ApiResponse updateTask(@PathVariable int index, @RequestBody Task task) {
+      if (index>tasks.size()){
         tasks.set(index, task);
-        return new ApiResponse("Updated Successful");
+        return new ApiResponse("Updated Successful");}
+      else return new ApiResponse("Index not Valid ");
+
     }
 
     //-----------------------------Delete a task
     @DeleteMapping("delete/{index}")
     public ApiResponse deleteTask(@PathVariable int index) {
-        tasks.remove(index);
-        return new ApiResponse("Deleted is successful");
+        if (index < tasks.size()) {
+            tasks.remove(index);
+            return new ApiResponse("Deleted is successful");
+        } else return new ApiResponse("Index not Valid ");
+
     }
 
     //--------------------------Change the task status as done or not done
-    @PutMapping("change/{status}/{index}")
-    public ApiResponse changeStatus(@PathVariable boolean status, @PathVariable int index) {
-        if (status) {
-            tasks.get(index).setStatus("Done");
-            return new ApiResponse("Changed successfully");
-        } else {
-            tasks.get(index).setStatus("Not Done");
-            return new ApiResponse("Changed successfully");
+    @PutMapping("change/{index}")
+    public ApiResponse changeStatus(@PathVariable int index) {
+        if (index < tasks.size()) {
+            if (tasks.get(index).getStatus().equalsIgnoreCase("Done")) {
+                tasks.get(index).setStatus("Not Done");
+                return new ApiResponse("Changed successfully");
+            } else {
+                tasks.get(index).setStatus("Done");
+                return new ApiResponse("Changed successfully");
+            }
+//        }
         }
+        return new ApiResponse("Index not Valid ");
+
     }
 
     //--------------------------Search for a task by given title
@@ -59,6 +71,5 @@ public class TaskController {
         }
         return null;
     }
-//-------------------------------------
-
 }
+//-------------------------------------
